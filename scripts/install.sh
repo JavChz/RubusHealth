@@ -33,24 +33,31 @@ fi
 
 # ── Node.js check / install ─────────────────────────────────────────────────
 NODE_MIN_MAJOR=18
+NODE_RECOMMENDED=22
 
 if command -v node &>/dev/null; then
   NODE_VERSION=$(node --version | sed 's/v//')
   NODE_MAJOR=$(echo "$NODE_VERSION" | cut -d. -f1)
   if (( NODE_MAJOR >= NODE_MIN_MAJOR )); then
-    success "Node.js $NODE_VERSION found"
+    if (( NODE_MAJOR >= 24 )); then
+      warn "Node.js $NODE_VERSION detected. Node.js 24+ has known compatibility issues"
+      warn "with native addons (better-sqlite3). Upgrading to Node.js 22 LTS..."
+      INSTALL_NODE=1
+    else
+      success "Node.js $NODE_VERSION found"
+    fi
   else
-    warn "Node.js $NODE_VERSION is too old (need ≥$NODE_MIN_MAJOR). Installing LTS..."
+    warn "Node.js $NODE_VERSION is too old (need ≥$NODE_MIN_MAJOR). Installing v${NODE_RECOMMENDED} LTS..."
     INSTALL_NODE=1
   fi
 else
-  info "Node.js not found. Installing LTS..."
+  info "Node.js not found. Installing v${NODE_RECOMMENDED} LTS..."
   INSTALL_NODE=1
 fi
 
 if [[ "${INSTALL_NODE:-0}" == "1" ]]; then
-  info "Installing Node.js LTS via NodeSource..."
-  curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+  info "Installing Node.js ${NODE_RECOMMENDED} LTS via NodeSource..."
+  curl -fsSL "https://deb.nodesource.com/setup_${NODE_RECOMMENDED}.x" | sudo -E bash -
   sudo apt-get install -y nodejs
   success "Node.js $(node --version) installed"
 fi
