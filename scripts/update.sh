@@ -40,8 +40,8 @@ npm install --quiet
 success "Dependencies ready"
 
 info "Building..."
-npm run build --workspace=web -- --silent
-npm run build --workspace=server -- --silent
+npm run build --workspace=web --silent
+npm run build --workspace=server --silent
 success "Build complete"
 
 info "Restarting service..."

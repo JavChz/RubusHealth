@@ -74,7 +74,12 @@ REPO_URL="https://github.com/JavChz/RubusHealth.git"
 
 if [[ -d "$INSTALL_DIR/.git" ]]; then
   warn "Existing installation found at $INSTALL_DIR"
-  read -r -p "  Reinstall? (overwrites existing) [y/N] " CONFIRM
+  CONFIRM="n"
+  if [[ -c /dev/tty ]]; then
+    read -r -p "  Reinstall/Update? (overwrites existing) [y/N] " CONFIRM </dev/tty || true
+  else
+    read -r -p "  Reinstall/Update? (overwrites existing) [y/N] " CONFIRM || true
+  fi
   if [[ "${CONFIRM,,}" != "y" ]]; then
     info "Keeping existing installation."
     exit 0
@@ -95,8 +100,8 @@ success "Dependencies installed"
 
 # ── Build ────────────────────────────────────────────────────────────────────
 info "Building application..."
-npm run build --workspace=web -- --silent
-npm run build --workspace=server -- --silent
+npm run build --workspace=web --silent
+npm run build --workspace=server --silent
 success "Build complete"
 
 # ── CLI symlink ──────────────────────────────────────────────────────────────
@@ -135,7 +140,12 @@ if command -v systemctl &>/dev/null; then
 
   # Auto-start prompt
   echo ""
-  read -r -p "  Enable auto-start on boot? [Y/n] " AUTOSTART
+  AUTOSTART="y"
+  if [[ -c /dev/tty ]]; then
+    read -r -p "  Enable auto-start on boot? [Y/n] " AUTOSTART </dev/tty || true
+  else
+    read -r -p "  Enable auto-start on boot? [Y/n] " AUTOSTART || true
+  fi
   if [[ "${AUTOSTART,,}" != "n" ]]; then
     sudo systemctl enable rubushealth
     success "Auto-start enabled"
