@@ -100,8 +100,8 @@ success "Dependencies installed"
 
 # ── Build ────────────────────────────────────────────────────────────────────
 info "Building application..."
-npm run build --workspace=web --silent
-npm run build --workspace=server --silent
+npm run build --workspace=web
+npm run build --workspace=server
 success "Build complete"
 
 # ── CLI symlink ──────────────────────────────────────────────────────────────
