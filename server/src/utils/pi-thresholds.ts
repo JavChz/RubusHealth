@@ -1,8 +1,5 @@
-import { createRequire } from 'module';
+import { piModels } from './pi-models.js';
 import si from 'systeminformation';
-
-const require = createRequire(import.meta.url);
-const piModels = require('./pi-models.json') as PiModelsConfig;
 
 interface PiThresholds {
   chipset: string;

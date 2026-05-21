@@ -8,7 +8,7 @@
  * - Raspberry Pi foundation documentation
  * - BCM2835/BCM2836/BCM2837/BCM2711/BCM2712 datasheets
  */
-{
+export const piModels = {
   "models": [
     {
       "match": ["Pi 1", "BCM2835", "Model A", "Model B", "Zero"],
